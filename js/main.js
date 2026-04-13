@@ -481,15 +481,31 @@ function showToast(message, type) {
       sessionStorage.setItem('jbg_registration', JSON.stringify(registrationData));
     } catch(e) { /* storage unavailable — non-fatal */ }
 
-    // Fire Power Automate call without blocking the redirect on it.
-    // For demo: always navigate to success after a brief delay regardless of flow outcome.
-    callPowerAutomateFlow(registrationData).catch(function (err) {
-      console.error('[Power Automate] Flow call failed:', err);
-    });
+    // Base64-encode all uploaded files, then fire the PA flow.
+    function readFileAsBase64(file) {
+      return new Promise(function (resolve) {
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+          // result is "data:mime/type;base64,XXXXX" — strip the prefix
+          var base64 = evt.target.result.split(',')[1];
+          resolve({ name: file.name, mimeType: file.type, content: base64 });
+        };
+        reader.onerror = function () { resolve(null); }; // skip unreadable files
+        reader.readAsDataURL(file);
+      });
+    }
 
-    setTimeout(function () {
-      window.location.href = 'success.html';
-    }, 1500);
+    Promise.all(uploadedFiles.map(readFileAsBase64)).then(function (encodedFiles) {
+      registrationData.files = encodedFiles.filter(Boolean);
+
+      callPowerAutomateFlow(registrationData).catch(function (err) {
+        console.error('[Power Automate] Flow call failed:', err);
+      });
+
+      setTimeout(function () {
+        window.location.href = 'success.html';
+      }, 1500);
+    });
   });
 })();
 
