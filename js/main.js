@@ -123,13 +123,14 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
 /* ============================================================
    FILE UPLOAD — Drag-and-drop + click upload
    ============================================================ */
+// Declared here so the form submit handler can read it too
+var uploadedFiles = [];
+
 (function initFileUpload() {
   var zone      = document.getElementById('uploadZone');
   var input     = document.getElementById('fileInput');
   var fileList  = document.getElementById('fileList');
   if (!zone || !input || !fileList) return;
-
-  var uploadedFiles = [];
 
   // Helper: Format bytes to human-readable
   function formatSize(bytes) {
