@@ -53,28 +53,27 @@ var POWER_AUTOMATE_FLOW_URL = '__POWER_AUTOMATE_FLOW_URL__';
 function callPowerAutomateFlow(payload) {
   return new Promise(function (resolve, reject) {
 
-    // ── TODO: Remove this simulation block once the flow URL is configured ──
-    /*if (POWER_AUTOMATE_FLOW_URL === 'YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE') {
-      console.log('[Power Automate] Flow URL not yet configured — simulating submission.');
-      console.log('[Power Automate] Payload that will be sent:', JSON.stringify(payload, null, 2));
-      setTimeout(resolve, 1500); // simulate network delay
+    // If the URL hasn't been injected yet (local dev or secret not set), log and skip.
+    if (!POWER_AUTOMATE_FLOW_URL || POWER_AUTOMATE_FLOW_URL.indexOf('__') === 0) {
+      console.log('[Power Automate] URL not configured — skipping flow call (demo mode).');
+      console.log('[Power Automate] Payload:', JSON.stringify(payload, null, 2));
+      resolve();
       return;
-    }*/
+    }
 
-    // ── Uncomment below (and remove the simulation block above) once the URL is set ──
     fetch(POWER_AUTOMATE_FLOW_URL, {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(payload)
-     })
-     .then(function (response) {
-       if (!response.ok) { throw new Error('Flow returned HTTP ' + response.status); }
-       resolve(response);
-     })
-     .catch(function (err) {
-       console.error('[Power Automate] Flow call failed:', err);
-       reject(err);
-     });
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function (response) {
+      if (!response.ok) { throw new Error('Flow returned HTTP ' + response.status); }
+      resolve(response);
+    })
+    .catch(function (err) {
+      console.error('[Power Automate] Flow call failed:', err);
+      reject(err);
+    });
   });
 }
 
