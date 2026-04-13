@@ -313,6 +313,12 @@ function showToast(message, type) {
   var form = document.getElementById('registrationForm');
   if (!form) return;
 
+  // Remove HTML required attributes so browser-native validation never fires.
+  // The visual asterisks (*) in the labels are kept; only the blocking behaviour is removed.
+  form.querySelectorAll('[required]').forEach(function (el) {
+    el.removeAttribute('required');
+  });
+
   // Required field definitions
   var requiredFields = [
     { id: 'orgName',    label: 'Organization Name' },
@@ -476,16 +482,15 @@ function showToast(message, type) {
       sessionStorage.setItem('jbg_registration', JSON.stringify(registrationData));
     } catch(e) { /* storage unavailable — non-fatal */ }
 
-    // Call Power Automate flow (or simulation if URL not yet configured)
-    callPowerAutomateFlow(registrationData)
-      .then(function () {
-        window.location.href = 'success.html';
-      })
-      .catch(function () {
-        // Flow call failed — still navigate to success in demo mode
-        // In production you would show an error to the user here
-        window.location.href = 'success.html';
-      });
+    // Fire Power Automate call without blocking the redirect on it.
+    // For demo: always navigate to success after a brief delay regardless of flow outcome.
+    callPowerAutomateFlow(registrationData).catch(function (err) {
+      console.error('[Power Automate] Flow call failed:', err);
+    });
+
+    setTimeout(function () {
+      window.location.href = 'success.html';
+    }, 1500);
   });
 })();
 
