@@ -6,6 +6,79 @@
 'use strict';
 
 /* ============================================================
+   POWER AUTOMATE INTEGRATION
+   ============================================================
+   STEP 1 — In Power Automate, create an instant cloud flow with
+             the trigger: "When an HTTP request is received".
+             Set the request body JSON schema to match the
+             registrationData object below.
+
+   STEP 2 — After saving the flow, Power Automate will generate
+             a unique HTTPS URL. Paste it as the value below.
+
+   STEP 3 — In callPowerAutomateFlow(), uncomment the fetch block
+             and remove the simulation block beneath it.
+   ============================================================ */
+var POWER_AUTOMATE_FLOW_URL = 'YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE';
+
+/**
+ * Sends the registration payload to the Power Automate HTTP trigger.
+ * Returns a Promise that resolves when the call completes.
+ *
+ * Expected JSON schema for the flow trigger (use this in Power Automate
+ * "Generate from sample" to auto-create the schema):
+ * {
+ *   "refNumber":    "JBG-2026-000001",
+ *   "submittedAt":  "2026-04-13T12:00:00.000Z",
+ *   "orgName":      "Sunshine Ice Cream Co.",
+ *   "industry":     "Food Service & Restaurants",
+ *   "orgSize":      "51-200 employees",
+ *   "website":      "https://example.com",
+ *   "country":      "United States",
+ *   "state":        "Ohio",
+ *   "city":         "Columbus",
+ *   "firstName":    "Jane",
+ *   "lastName":     "Smith",
+ *   "contactName":  "Jane Smith",
+ *   "jobTitle":     "VP of Procurement",
+ *   "email":        "jane@example.com",
+ *   "phone":        "(555) 000-0000",
+ *   "products":     ["cake-cones", "sugar-cones"],
+ *   "channel":      "Food Service – Direct",
+ *   "volume":       "1,000 – 10,000 units/cases",
+ *   "timeline":     "1–3 months",
+ *   "description":  "Looking to source cones for 12 locations."
+ * }
+ */
+function callPowerAutomateFlow(payload) {
+  return new Promise(function (resolve, reject) {
+
+    // ── TODO: Remove this simulation block once the flow URL is configured ──
+    if (POWER_AUTOMATE_FLOW_URL === 'YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE') {
+      console.log('[Power Automate] Flow URL not yet configured — simulating submission.');
+      console.log('[Power Automate] Payload that will be sent:', JSON.stringify(payload, null, 2));
+      setTimeout(resolve, 1500); // simulate network delay
+      return;
+    }
+
+    // ── Uncomment below (and remove the simulation block above) once the URL is set ──
+    // fetch(POWER_AUTOMATE_FLOW_URL, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(payload)
+    // })
+    // .then(function (response) {
+    //   if (!response.ok) { throw new Error('Flow returned HTTP ' + response.status); }
+    //   resolve(response);
+    // })
+    // .catch(function (err) {
+    //   console.error('[Power Automate] Flow call failed:', err);
+    //   reject(err);
+    // });
+  });
+}
+
+/* ============================================================
    NAVIGATION — Mobile hamburger toggle
    ============================================================ */
 (function initNav() {
@@ -444,15 +517,21 @@ function showToast(message, type) {
       description:  (document.getElementById('description') ? document.getElementById('description').value.trim() : '')
     };
 
-    // Persist to sessionStorage for success page (no PII leaves the browser in this demo)
+    // Persist to sessionStorage for success page
     try {
       sessionStorage.setItem('jbg_registration', JSON.stringify(registrationData));
     } catch(e) { /* storage unavailable — non-fatal */ }
 
-    // Simulate async API call (1.5 s delay)
-    setTimeout(function () {
-      window.location.href = 'success.html';
-    }, 1500);
+    // Call Power Automate flow (or simulation if URL not yet configured)
+    callPowerAutomateFlow(registrationData)
+      .then(function () {
+        window.location.href = 'success.html';
+      })
+      .catch(function () {
+        // Flow call failed — still navigate to success in demo mode
+        // In production you would show an error to the user here
+        window.location.href = 'success.html';
+      });
   });
 })();
 
