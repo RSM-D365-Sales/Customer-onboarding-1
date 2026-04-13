@@ -32,7 +32,16 @@ jobs:
         env:
           PA_URL: ${{ secrets.POWER_AUTOMATE_FLOW_URL }}
         run: |
-          sed -i "s|__POWER_AUTOMATE_FLOW_URL__|${PA_URL}|g" js/main.js
+          python3 -c "
+          import os
+          url = os.environ['PA_URL']
+          with open('js/main.js', 'r') as f:
+              content = f.read()
+          content = content.replace('__POWER_AUTOMATE_FLOW_URL__', url)
+          with open('js/main.js', 'w') as f:
+              f.write(content)
+          print('Injected PA URL successfully.')
+          "
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
