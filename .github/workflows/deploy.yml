@@ -28,6 +28,12 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Inject Power Automate URL
+        env:
+          PA_URL: ${{ secrets.POWER_AUTOMATE_FLOW_URL }}
+        run: |
+          sed -i "s|__POWER_AUTOMATE_FLOW_URL__|${PA_URL}|g" js/main.js
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

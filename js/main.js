@@ -19,7 +19,7 @@
    STEP 3 — In callPowerAutomateFlow(), uncomment the fetch block
              and remove the simulation block beneath it.
    ============================================================ */
-var POWER_AUTOMATE_FLOW_URL = 'https://7334890904dae19abaf9c87c4f89f2.00.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/d2b1b198ef5b4cde8adc1f0c29a64f61/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_szm5m3QjZW9VvXBYxvn4bcCvAzmIOvy-gVKdBuFwIc';
+var POWER_AUTOMATE_FLOW_URL = '__POWER_AUTOMATE_FLOW_URL__';
 
 /**
  * Sends the registration payload to the Power Automate HTTP trigger.
