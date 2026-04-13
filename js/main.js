@@ -19,7 +19,7 @@
    STEP 3 — In callPowerAutomateFlow(), uncomment the fetch block
              and remove the simulation block beneath it.
    ============================================================ */
-var POWER_AUTOMATE_FLOW_URL = 'YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE';
+var POWER_AUTOMATE_FLOW_URL = 'https://7334890904dae19abaf9c87c4f89f2.00.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/d2b1b198ef5b4cde8adc1f0c29a64f61/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_szm5m3QjZW9VvXBYxvn4bcCvAzmIOvy-gVKdBuFwIc';
 
 /**
  * Sends the registration payload to the Power Automate HTTP trigger.
@@ -54,27 +54,27 @@ function callPowerAutomateFlow(payload) {
   return new Promise(function (resolve, reject) {
 
     // ── TODO: Remove this simulation block once the flow URL is configured ──
-    if (POWER_AUTOMATE_FLOW_URL === 'YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE') {
+    /*if (POWER_AUTOMATE_FLOW_URL === 'YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE') {
       console.log('[Power Automate] Flow URL not yet configured — simulating submission.');
       console.log('[Power Automate] Payload that will be sent:', JSON.stringify(payload, null, 2));
       setTimeout(resolve, 1500); // simulate network delay
       return;
-    }
+    }*/
 
     // ── Uncomment below (and remove the simulation block above) once the URL is set ──
-    // fetch(POWER_AUTOMATE_FLOW_URL, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(payload)
-    // })
-    // .then(function (response) {
-    //   if (!response.ok) { throw new Error('Flow returned HTTP ' + response.status); }
-    //   resolve(response);
-    // })
-    // .catch(function (err) {
-    //   console.error('[Power Automate] Flow call failed:', err);
-    //   reject(err);
-    // });
+    fetch(POWER_AUTOMATE_FLOW_URL, {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify(payload)
+     })
+     .then(function (response) {
+       if (!response.ok) { throw new Error('Flow returned HTTP ' + response.status); }
+       resolve(response);
+     })
+     .catch(function (err) {
+       console.error('[Power Automate] Flow call failed:', err);
+       reject(err);
+     });
   });
 }
 

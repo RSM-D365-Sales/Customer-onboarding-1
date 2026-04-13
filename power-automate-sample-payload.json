@@ -1,0 +1,31 @@
+{
+  "refNumber": "JBG-2026-000001",
+  "submittedAt": "2026-04-13T12:00:00.000Z",
+
+  "orgName": "Joy Baking Group",
+  "country": "United States",
+  "state": "Pennsylvania",
+  "city": "Hermitage",
+
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "email": "jane.smith@joycone.com",
+  "phone": "(724) 555-0100",
+
+  "industry": "",
+  "orgSize": "",
+  "website": "",
+  "channel": "",
+  "volume": "",
+  "timeline": "",
+  "products": [],
+  "description": "",
+
+  "files": [
+    {
+      "fileName": "",
+      "fileType": "",
+      "fileContentBase64": ""
+    }
+  ]
+}
