@@ -506,6 +506,10 @@ function showToast(message, type) {
       setTimeout(function () {
         window.location.href = 'success.html';
       }, 1500);
+    }).catch(function (err) {
+      // File encoding failed — still redirect so demo never stalls
+      console.error('[Form] File encoding error:', err);
+      window.location.href = 'success.html';
     });
   });
 })();
