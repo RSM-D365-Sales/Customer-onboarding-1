@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration Submitted | Joy Baking Group Customer Portal</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍦</text></svg>" />
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-brand" aria-label="Joy Baking Group Home">
+          <div class="nav-brand-logo" aria-hidden="true">J</div>
+          <div class="nav-brand-text">
+            <div class="brand-name"><span>Joy</span> Baking Group</div>
+            <div class="brand-sub">Customer Portal</div>
+          </div>
+        </a>
+        <ul class="nav-links" id="navLinks" role="list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#products">Our Products</a></li>
+          <li><a href="customer-registration.html">Register</a></li>
+        </ul>
+        <div class="nav-cta" style="visibility: hidden;">
+          <a href="index.html" class="btn btn-outline btn-sm">Home</a>
+        </div>
+        <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== SUCCESS CONTENT ========== -->
+  <main class="success-page" aria-labelledby="success-heading">
+    <div class="container">
+      <div class="success-card" role="status" aria-live="polite">
+
+        <!-- Card Header -->
+        <div class="success-card-header">
+          <div class="success-icon" aria-hidden="true">✅</div>
+          <h1 id="success-heading">Registration Submitted!</h1>
+          <p>Thank you for registering with Joy Baking Group. We've received your information and our team will be in touch shortly.</p>
+        </div>
+
+        <!-- Card Body -->
+        <div class="success-card-body">
+
+          <!-- Reference Number -->
+          <div class="success-ref">
+            <div>
+              <strong>Reference Number</strong><br/>
+              <span id="refNumber" style="font-family: monospace; font-size: 1rem; color: var(--joy-orange);">JBG-2026-000001</span>
+            </div>
+            <div style="text-align: right; font-size: 0.8rem;">
+              <strong>Submitted</strong><br/>
+              <span id="submittedDate"></span>
+            </div>
+          </div>
+
+          <!-- Submitted Summary -->
+          <div id="submissionSummary" style="margin-bottom: 24px; padding: 16px 20px; background: var(--joy-cream); border: 1px solid var(--joy-border); border-radius: 8px; font-size: 0.88rem; line-height: 1.85; color: var(--joy-gray);">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- What Happens Next -->
+          <div class="success-steps">
+            <h3>What Happens Next?</h3>
+
+            <div class="success-step">
+              <div class="success-step-num" aria-label="Step 1">1</div>
+              <div>
+                <h4>Registration Under Review</h4>
+                <p>Our sales team will review your registration within <strong>1–2 business days</strong>.</p>
+              </div>
+            </div>
+
+            <div class="success-step">
+              <div class="success-step-num" aria-label="Step 2">2</div>
+              <div>
+                <h4>Confirmation Email</h4>
+                <p>A confirmation email with your reference number and next steps will be sent to the email address you provided.</p>
+              </div>
+            </div>
+
+            <div class="success-step">
+              <div class="success-step-num" aria-label="Step 3">3</div>
+              <div>
+                <h4>Account Manager Assigned</h4>
+                <p>A dedicated Joy Baking Group account manager will be assigned to your organization.</p>
+              </div>
+            </div>
+
+            <div class="success-step">
+              <div class="success-step-num" aria-label="Step 4">4</div>
+              <div>
+                <h4>Initial Consultation Scheduled</h4>
+                <p>Your account manager will reach out to schedule an initial call to discuss your specific product needs, pricing, and timelines.</p>
+              </div>
+            </div>
+
+            <div class="success-step">
+              <div class="success-step-num" aria-label="Step 5">5</div>
+              <div>
+                <h4>Onboarding &amp; First Order</h4>
+                <p>Complete your onboarding documentation, review your terms, and place your first order with Joy Baking Group.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="success-actions">
+            <a href="index.html" class="btn btn-primary">Return to Home</a>
+            <a href="customer-registration.html" class="btn btn-outline">Submit Another Registration</a>
+          </div>
+
+          <!-- Contact Note -->
+          <div style="text-align: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--joy-gray-light); font-size: 0.82rem; color: var(--joy-gray); line-height: 1.7;">
+            Questions? Contact our sales team at
+            <a href="mailto:sales@joycone.com" style="color: var(--joy-orange); font-weight: 500;">sales@joycone.com</a>
+            or visit
+            <a href="https://joycone.com/contact/" target="_blank" rel="noopener noreferrer" style="color: var(--joy-orange); font-weight: 500;">joycone.com/contact</a>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <span>© 2026 Joy Baking Group. All Rights Reserved. This portal is for demonstration purposes.</span>
+        <a href="https://joycone.com/" target="_blank" rel="noopener noreferrer">joycone.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Populate success page with session data
+    (function () {
+      var data = {};
+      try { data = JSON.parse(sessionStorage.getItem('jbg_registration') || '{}'); } catch(e) {}
+
+      // Reference number
+      var refEl = document.getElementById('refNumber');
+      if (data.refNumber) refEl.textContent = data.refNumber;
+
+      // Submitted date
+      var dateEl = document.getElementById('submittedDate');
+      var now = data.submittedAt ? new Date(data.submittedAt) : new Date();
+      dateEl.textContent = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      // Summary
+      var summaryEl = document.getElementById('submissionSummary');
+      if (data.orgName) {
+        summaryEl.innerHTML =
+          '<strong>Organization:</strong> ' + escapeHtml(data.orgName) + '<br/>' +
+          (data.contactName ? '<strong>Primary Contact:</strong> ' + escapeHtml(data.contactName) + '<br/>' : '') +
+          (data.email ? '<strong>Email:</strong> ' + escapeHtml(data.email) + '<br/>' : '') +
+          (data.industry ? '<strong>Industry:</strong> ' + escapeHtml(data.industry) + '<br/>' : '') +
+          (data.channel ? '<strong>Distribution Channel:</strong> ' + escapeHtml(data.channel) : '');
+      } else {
+        summaryEl.remove();
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+    })();
+  </script>
+</body>
+</html>
