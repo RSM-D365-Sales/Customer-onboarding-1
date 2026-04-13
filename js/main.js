@@ -487,12 +487,17 @@ function showToast(message, type) {
       return new Promise(function (resolve) {
         var reader = new FileReader();
         reader.onload = function (evt) {
-          // result is "data:mime/type;base64,XXXXX" — strip the prefix
-          var base64 = evt.target.result.split(',')[1];
-          resolve({ name: file.name, mimeType: file.type, content: base64 });
+          var bytes = new Uint8Array(evt.target.result);
+          // Process in 32KB chunks to avoid call stack overflow on large files
+          var chunkSize = 0x8000;
+          var parts = [];
+          for (var i = 0; i < bytes.length; i += chunkSize) {
+            parts.push(String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + chunkSize, bytes.length))));
+          }
+          resolve({ name: file.name, mimeType: file.type, content: btoa(parts.join('')) });
         };
-        reader.onerror = function () { resolve(null); }; // skip unreadable files
-        reader.readAsDataURL(file);
+        reader.onerror = function () { resolve(null); };
+        reader.readAsArrayBuffer(file);  // More reliable than readAsDataURL for binary files
       });
     }
 
