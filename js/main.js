@@ -359,37 +359,39 @@ function showToast(message, type) {
     catch(e) { return false; }
   }
 
-  // Real-time validation on blur
+  // Inline format hints on blur (email/phone/url only — blank is always allowed)
   requiredFields.forEach(function (field) {
     var el = document.getElementById(field.id);
     if (!el) return;
     el.addEventListener('blur', function () {
-      validateField(field);
+      var val = el.value.trim();
+      if (!val) { setFieldError(field.id, ''); return; } // blank is fine
+      if (field.id === 'email' && !isValidEmail(val)) {
+        setFieldError(field.id, 'Please enter a valid email address.');
+      } else if (field.id === 'phone' && !isValidPhone(val)) {
+        setFieldError(field.id, 'Please enter a valid phone number.');
+      } else {
+        setFieldError(field.id, '');
+      }
     });
     el.addEventListener('input', function () {
-      if (el.classList.contains('error')) validateField(field);
+      // Clear format errors as user types
+      if (el.classList.contains('error')) setFieldError(field.id, '');
     });
   });
 
   function validateField(field) {
+    // Format-only checks — blank values are permitted for demo purposes
     var el = document.getElementById(field.id);
     if (!el) return true;
     var val = el.value.trim();
-
-    if (!val) {
-      setFieldError(field.id, field.label + ' is required.');
-      return false;
-    }
+    if (!val) return true;
     if (field.id === 'email' && !isValidEmail(val)) {
       setFieldError(field.id, 'Please enter a valid email address.');
       return false;
     }
     if (field.id === 'phone' && !isValidPhone(val)) {
       setFieldError(field.id, 'Please enter a valid phone number.');
-      return false;
-    }
-    if (field.id === 'website' && !isValidUrl(val)) {
-      setFieldError(field.id, 'Please enter a valid URL (e.g., https://yourcompany.com).');
       return false;
     }
     setFieldError(field.id, '');
@@ -428,62 +430,14 @@ function showToast(message, type) {
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    var isValid = true;
-
-    // Validate all required fields
-    requiredFields.forEach(function (field) {
-      if (!validateField(field)) isValid = false;
-    });
-
-    // Validate website if filled
+    // Format-only checks on any filled fields (blank is always allowed)
+    requiredFields.forEach(function (field) { validateField(field); });
     if (websiteEl && websiteEl.value && !isValidUrl(websiteEl.value)) {
       setFieldError('website', 'Please enter a valid URL.');
-      isValid = false;
     }
 
-    // Validate products checkboxes — at least one required
+    // Collect checked products (none selected is fine for demo)
     var checkedProducts = form.querySelectorAll('input[name="products"]:checked');
-    var productErrEl    = document.getElementById('products-error');
-    if (checkedProducts.length === 0) {
-      if (productErrEl) {
-        productErrEl.textContent = 'Please select at least one product of interest.';
-        productErrEl.classList.add('visible');
-      }
-      isValid = false;
-    } else {
-      if (productErrEl) {
-        productErrEl.textContent = '';
-        productErrEl.classList.remove('visible');
-      }
-    }
-
-    // Validate consent checkboxes
-    var consentContact  = document.getElementById('consentContact');
-    var consentAccurate = document.getElementById('consentAccurate');
-    var consentErrEl    = document.getElementById('consent-error');
-    if (!consentContact.checked || !consentAccurate.checked) {
-      if (consentErrEl) {
-        consentErrEl.textContent = 'Please accept the required consent acknowledgements above.';
-        consentErrEl.style.display = 'block';
-        consentErrEl.classList.add('visible');
-      }
-      isValid = false;
-    } else {
-      if (consentErrEl) {
-        consentErrEl.textContent = '';
-        consentErrEl.style.display = 'none';
-      }
-    }
-
-    if (!isValid) {
-      // Scroll to first error
-      var firstError = form.querySelector('.form-control.error, .field-error.visible');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      showToast('Please correct the highlighted fields and try again.', 'error');
-      return;
-    }
 
     // --- Simulate submission ---
     var submitBtn = document.getElementById('submitBtn');
