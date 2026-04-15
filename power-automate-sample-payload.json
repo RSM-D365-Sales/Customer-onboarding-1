@@ -14,18 +14,27 @@
 
   "industry": "",
   "orgSize": "",
+  "annualRevenue": "",
   "website": "",
   "channel": "",
   "volume": "",
   "timeline": "",
+  "budget": "",
+  "geo": "",
+  "preferredContact": "",
   "products": [],
   "description": "",
 
   "files": [
     {
-      "fileName": "",
-      "fileType": "",
-      "fileContentBase64": ""
+      "fileName": "BusinessLicense.pdf",
+      "fileType": "application/pdf",
+      "fileContentBase64": "<base64-encoded content>"
+    },
+    {
+      "fileName": "JBG-2026-000001_Joy-Baking-Group_Application.pdf",
+      "fileType": "application/pdf",
+      "fileContentBase64": "<base64-encoded Application Summary PDF — auto-generated on form submit>"
     }
   ]
 }

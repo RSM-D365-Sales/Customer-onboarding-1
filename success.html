@@ -115,6 +115,7 @@
           <!-- Actions -->
           <div class="success-actions">
             <a href="index.html" class="btn btn-primary">Return to Home</a>
+            <button type="button" class="btn btn-outline" id="downloadPdfBtn" onclick="downloadApplicationPDF()">&#128196; Download Application Summary</button>
             <a href="customer-registration.html" class="btn btn-outline">Submit Another Registration</a>
           </div>
 
@@ -140,6 +141,7 @@
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="js/main.js"></script>
   <script>
     // Populate success page with session data
@@ -177,6 +179,37 @@
           .replace(/"/g, '&quot;');
       }
     })();
+
+    // Re-generate and download the Application Summary PDF from session data.
+    function downloadApplicationPDF() {
+      var btn = document.getElementById('downloadPdfBtn');
+      try {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          alert('PDF library not available. Please check your internet connection and try again.');
+          return;
+        }
+        if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
+
+        var data = {};
+        try { data = JSON.parse(sessionStorage.getItem('jbg_registration') || '{}'); } catch(e) {}
+
+        // Attach file names (without base64 content) so the PDF can list attached documents
+        try {
+          var names = JSON.parse(sessionStorage.getItem('jbg_file_names') || '[]');
+          data.files = names.map(function(n) { return { name: n }; });
+        } catch(e) { data.files = []; }
+
+        var doc = generateApplicationPDF(data);
+        var safeOrg = (data.orgName || 'Customer')
+          .replace(/[^a-zA-Z0-9]/g, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '');
+        doc.save((data.refNumber || 'JBG') + '_' + safeOrg + '_Application.pdf');
+      } catch(err) {
+        console.error('[PDF] Download failed:', err);
+        alert('Could not generate the PDF. Please try again.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '&#128196; Download Application Summary'; }
+      }
+    }
   </script>
 </body>
 </html>
