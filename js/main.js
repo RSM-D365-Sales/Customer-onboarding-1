@@ -516,7 +516,7 @@ function generateApplicationPDF(data) {
      SECTION 4 — ATTACHED DOCUMENTS (customer-uploaded only)
      ====================================================== */
   var attachments = (data.files || []).filter(function(f) {
-    var n = f.name || f.fileName || '';
+    var n = f.fileName || '';
     return n && !/Application\.pdf$/i.test(n);   // exclude the summary PDF itself
   });
 
@@ -527,7 +527,7 @@ function generateApplicationPDF(data) {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
       doc.setTextColor(CD[0], CD[1], CD[2]);
-      doc.text((idx + 1) + '.   ' + (file.name || file.fileName || 'Unknown'), ML + 4, y + 1);
+      doc.text((idx + 1) + '.   ' + (file.fileName || 'Unknown'), ML + 4, y + 1);
       y += 7;
     });
   }
@@ -748,7 +748,7 @@ function generateApplicationPDF(data) {
           for (var i = 0; i < bytes.length; i += chunkSize) {
             parts.push(String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + chunkSize, bytes.length))));
           }
-          resolve({ name: file.name, mimeType: file.type, content: btoa(parts.join('')) });
+          resolve({ fileName: file.name, fileType: file.type, fileContentBase64: btoa(parts.join('')) });
         };
         reader.onerror = function () { resolve(null); };
         reader.readAsArrayBuffer(file);  // More reliable than readAsDataURL for binary files
@@ -767,13 +767,13 @@ function generateApplicationPDF(data) {
           var pdfName = registrationData.refNumber + '_' + safeOrg + '_Application.pdf';
           var pdfB64  = pdfDoc.output('datauristring').split(',')[1];
           // Append PDF so Power Automate receives it alongside any uploaded docs
-          registrationData.files.push({ name: pdfName, mimeType: 'application/pdf', content: pdfB64 });
+          registrationData.files.push({ fileName: pdfName, fileType: 'application/pdf', fileContentBase64: pdfB64 });
           // Trigger browser download into the user's Downloads folder
           pdfDoc.save(pdfName);
           // Persist file names (no content) so the success page can list them in a re-download
           try {
             sessionStorage.setItem('jbg_file_names', JSON.stringify(
-              registrationData.files.map(function(f) { return f.name || f.fileName || ''; })
+              registrationData.files.map(function(f) { return f.fileName || ''; })
             ));
           } catch(se) { /* storage unavailable — non-fatal */ }
         }

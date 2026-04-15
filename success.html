@@ -196,7 +196,7 @@
         // Attach file names (without base64 content) so the PDF can list attached documents
         try {
           var names = JSON.parse(sessionStorage.getItem('jbg_file_names') || '[]');
-          data.files = names.map(function(n) { return { name: n }; });
+          data.files = names.map(function(n) { return { fileName: n }; });
         } catch(e) { data.files = []; }
 
         var doc = generateApplicationPDF(data);
