@@ -654,17 +654,7 @@ function generateApplicationPDF(data) {
     return true;
   }
 
-  // Website field optional but should be valid if provided
   var websiteEl = document.getElementById('website');
-  if (websiteEl) {
-    websiteEl.addEventListener('blur', function () {
-      if (websiteEl.value && !isValidUrl(websiteEl.value)) {
-        setFieldError('website', 'Please enter a valid URL (e.g., https://yourcompany.com).');
-      } else {
-        setFieldError('website', '');
-      }
-    });
-  }
 
   // Generate reference number
   function generateRef() {
@@ -688,9 +678,6 @@ function generateApplicationPDF(data) {
 
     // Format-only checks on any filled fields (blank is always allowed)
     requiredFields.forEach(function (field) { validateField(field); });
-    if (websiteEl && websiteEl.value && !isValidUrl(websiteEl.value)) {
-      setFieldError('website', 'Please enter a valid URL.');
-    }
 
     // Collect checked products (none selected is fine for demo)
     var checkedProducts = form.querySelectorAll('input[name="products"]:checked');
